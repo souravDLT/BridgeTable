@@ -37,7 +37,8 @@ filtereddf = hc.sql("""SELECT rowid_object,
                    """)
 filtereddf.persist(StorageLevel.MEMORY_AND_DISK)
 filtereddf.show()
-
+--------------------------------------------------------------------------------
+#real stuff
 
 filtereddf1 = hc.sql("""SELECT rowid_object,
                                rowid_cdh_household,
@@ -53,8 +54,6 @@ filtereddf1.persist(StorageLevel.MEMORY_AND_DISK)
 filtereddf1.registerTempTable("table1")
 #df=filtereddf1.groupBy("rowid_cdh_party")       #.count().collect()
 
---------------------------------------------------------------------------------
-
 windowdf = hc.sql("""SELECT rowid_cdh_household,
                             rowid_cdh_party,
                             last_update_date,
@@ -66,17 +65,20 @@ windowdf = hc.sql("""SELECT rowid_cdh_household,
                                     rank()
                            OVER (PARTITION BY rowid_cdh_party
                            ORDER BY last_update_date DESC) AS rank
-                           FROM table1 ) AS tmp
+                           FROM t_sda01.c_cdh_household_prty_rel
+                           WHERE  last_update_date < '2014-10-09 10:10:01') AS tmp
                     WHERE  rank = 1
                  """)
 windowdf.show()
+#count
+20943536
 windowdf.registerTempTable("windowTable")
 
-
+--------------------------------------------------------------------------------
 hc.sql("""
-       SELECT count(rowid_cdh_party, rowid_cdh_household) as ct, rowid_cdh_party
+       SELECT rowid_cdh_household, first(rank), count(rowid_cdh_party) as ct
        FROM   windowTable
-       GROUP  BY rowid_cdh_party
+       GROUP  BY rowid_cdh_household
        ORDER BY ct DESC
        """).show()
        WHERE rowid_cdh_party=53185721 83685968
@@ -103,11 +105,15 @@ hc.sql("""
 |  7| 82426879      |
 |  7| 66620093      |
 +---+---------------+
+--
+--
+--
+------------
 hc.sql("""
-       SELECT rowid_cdh_party, rank
+       SELECT rowid_cdh_party, rowid_cdh_household, count(rowid_cdh_party, rowid_cdh_household) AS cnt
        FROM   Table1
-       GROUP  BY rowid_cdh_party
-       ORDER BY ct DESC
+       GROUP  BY rowid_cdh_party, rowid_cdh_household
+       ORDER BY cnt DESC
        """).show()
 
 | ct|rowid_cdh_party|
@@ -137,9 +143,10 @@ hc.sql("""
 
 
 hc.sql("""
-       SELECT rowid_cdh_party, rowid_cdh_household, last_update_date
+       SELECT DISTINCT rowid_cdh_party, rowid_cdh_household, last_update_date
        FROM   windowTable
-       WHERE rowid_cdh_party=53185721
+       WHERE rowid_cdh_party=84018115
+       AND rowid_cdh_household=45789408
        """).show()
 
 
@@ -184,8 +191,10 @@ hc.sql("""
 
 inner1.show()
 
-hc.sql("""SELECT  *
-          FROM table1
+hc.sql("""SELECT  rowid_cdh_household,
+                  rowid_cdh_party,
+                  last_update_date
+          FROM t_sda01.c_cdh_household_prty_rel
           WHERE rowid_cdh_household = 46443811
           AND rowid_cdh_party = 53185721
           ORDER BY rowid_cdh_party DESC
@@ -218,7 +227,11 @@ hc.sql("""SELECT  *
 +-------------------+---------------+-------------------+
 only showing top 20 rows
 
-
+hc.sql("""
+       SELECT rowid_object, last_update_date
+       FROM   t_sda01.c_cdh_party
+       WHERE rowid_object=84018115
+       """).show()
 
 --------------------------------------------------------------------------------
 #Handy commands

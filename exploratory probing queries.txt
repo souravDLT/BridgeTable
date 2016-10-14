@@ -8,7 +8,7 @@ sqlContext.sql("""
 
 
 
-sqlContext.sql("Select rowid_object from t_sda01.c_cdh_household").show()
+sqlConxt.sql("Select rowid_object from t_sda01.c_cdh_household").show()
 
 
 

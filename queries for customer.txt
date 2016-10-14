@@ -1,0 +1,21 @@
+SELECT * FROM `t_sda01.household`;
+
+describe t_sda01.household;
+
+SELECT * FROM `t_sda01.sda_bridge_linkage`;
+
+SELECT * FROM `t_sda01.c_cdh_prty_phone_contact`
+
+SELECT * FROM `t_sda01.c_cdh_phone_contact
+
+select * from 
+
+
+sqlContext.sql("Select * from t_sda01.c_cdh_household , t_sda01.c_cdh_household_prty_rel where rowid_object=rowid_cdh_household").show()
+
+
+SHOW KEYS FROM tablename WHERE Key_name = 'PRIMARY'
+
+
+
+SELECT Col.Column_Name from INFORMATION_SCHEMA.TABLE_CONSTRAINTS Tab, INFORMATION_SCHEMA.CONSTRAINT_COLUMN_USAGE Col WHERE Col.Constraint_Name = Tab.Constraint_NameAND Col.Table_Name = Tab.Table_NameAND Constraint_Type = 'PRIMARY KEY'AND Col.Table_Name = 't_sda01.c_cdh_household'

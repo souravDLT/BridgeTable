@@ -1,0 +1,106 @@
+#Author:Sourav Bhowmik
+#Created Oct 07, 2016
+#SparkSQL
+--------------------------------------------------------------------------------
+
+#handy queries
+sqlContext.sql("Select count(*) from t_sda01.c_cdh_prty_email").show()
+sqlContext.sql("Describe t_sda01.c_cdh_prty_email").show()
+sqlContext.sql("Select count(*) from t_sda01.c_cdh_email").show()
+
+--------------------------------------------------------------------------------
+
+#business starts here
+
+
+
+
+df=sqlContext.sql("""SELECT a.create_date as Customer_create_date,
+                            f.rowid_object as person_id,
+                            a.rowid_object AS Party_id,
+                            c.rowid_object as household_id,
+                            e.phone_area_cd, e.phone_num
+
+                     FROM   t_sda01.c_cdh_party AS a,
+                            t_sda01.c_cdh_household_prty_rel AS b,
+                            t_sda01.c_cdh_household as c,
+                            t_sda01.c_cdh_prty_phone_contact as d,
+                            t_sda01.c_cdh_phone_contact as e,
+                            t_sda01.c_cdh_person as f
+
+
+                     WHERE  a.rowid_object=b.rowid_cdh_party
+                        AND b.rowid_cdh_household=c.rowid_object
+                        AND a.rowid_object=d.party_id
+                        AND d.phone_contact_id=e.rowid_object
+                        AND a.rowid_object=f.party_id""")
+df.persist(StorageLevel.MEMORY_AND_DISK)
+#df.cache()
+df.registerTempTable("tmp_bridge")
+
+df2=sqlContext.sql("""
+                SELECT g.email_addr_nm,
+                       a.rowid_object
+
+                FROM (t_sda01.c_cdh_email as g
+                    INNER JOIN
+                      t_sda01.c_cdh_prty_email as h
+                ON   (h.email_id = g.rowid_object))
+                INNER JOIN
+                     (t_sda01.c_cdh_party as a
+                ON a.rowid_object = h.party_id)
+                """)
+
+hc = sqlContext
+df2_rw = hc.table('t_sda01.c_cdh_email').selectExpr('email_addr_nm as email') \
+           .join(hc.table('t_sda01.c_cdh_prty_email').selectExpr('rowid_object as email'),
+                  on = ['email'], how = 'left_outer') \
+           .join(hc.table(''))
+
+df2_rw.explain()
+
+df2.persist(StorageLevel.MEMORY_AND_DISK)
+#df.cache()
+df2.registerTempTable("tmp_bridge2")
+
+
+
+
+#df3 is final bridge table
+df3=sqlContext.sql("""
+                     SELECT Customer_create_date,
+                            person_id,
+                            Party_id,
+                            household_id,
+                            phone_area_cd,
+                            phone_num,
+                            email_addr_nm
+
+                     FROM   tmp_bridge2 AS a INNER JOIN
+                            tmp_bridge AS b
+
+                     ON     a.rowid_object=b.person_id""")
+
+df3.persist(StorageLevel.MEMORY_AND_DISK)
+#df.cache()
+df3.registerTempTable("tmp_bridgeFinal")
+
+my_rdd=df3.rdd
+
+
+#This function converts a full date(eg "2004-09-03 17:25:11") to a month date(eg "2004-09")
+def month_extractor(full_date):
+    month_date=full_date[0:7]
+    return month_date
+
+
+monthly_rdd = my_rdd.filter(lambda x: month_extractor(x[0])=="2004-09")
+s1=monthly_rdd.toDF()
+s1.show()
+
+#business ends here
+--------------------------------------------------------------------------------
+#template
+sqlContext.sql("""
+
+              """).show()

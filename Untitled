@@ -1,0 +1,24 @@
+df4=sqlContext.sql("""SELECT a.create_date as Customer_create_date,
+                            a.rowid_object AS Party_id,
+                            c.rowid_object as household_id
+
+
+                     FROM   t_sda01.c_cdh_party AS a INNER JOIN
+                            t_sda01.c_cdh_household_prty_rel AS b
+
+                     ON  a.rowid_object=b.rowid_cdh_party
+                        """)
+        df4.persist(StorageLevel.MEMORY_AND_DISK)
+        #df.cache()
+
+        df4.registerTempTable("tmp_bridge")
+--------------------------------------------------------------------------------
+sqlContext.sql("""SELECT count(rowid_object)
+                  FROM t_sda01.c_cdh_party
+                  NOT IN """).show()
+
+--------------------------------------------------------------------------------
+LEFT OUTER JOIN
+t_sda01.c_cdh_prty_phone_contact as d INNER JOIN
+t_sda01.c_cdh_phone_contact as e RIGHT OUTER JOIN
+t_sda01.c_cdh_person as f

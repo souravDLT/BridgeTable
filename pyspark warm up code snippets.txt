@@ -1,0 +1,65 @@
+from pyspark.sql.functions import collect_list, collect_set, count, col, size, sum, udf, array, explode
+from pyspark.sql.types import StringType, ArrayType
+
+from __future__ import division
+import string
+import collections
+from itertools import chain
+import re
+import timeit
+
+
+df = sqlContext.sql("""SELECT a.contact_id,
+                              a.a100500,
+                              a.bk1_m,
+                              b.*
+                        FROM bk_groundtruth_temp as a LEFT OUTER JOIN
+                             acxiom_bk1_groups_tmp as b
+                        ON trim(a.bk1_m) = trim(b.bk1_a)""")
+
+
+df.persist(StorageLevel.MEMORY_AND_DISK)
+#df.cache()
+
+df.registerTempTable("df_tmp")
+
+final_block_members_size.show()
+
+
+# Spark aggegation funcions
+acxiom_bk1_groups = acxiom_blocks.groupBy("bk1_a").agg(collect_list('a100500').alias('bk1_members'))
+final_block_members_size_sum = final_block_members_size.agg(sum('member_count'))
+
+#.filter
+#.select
+
+dfp = df.toPandas()
+
+
+# Create UDF
+def list_to_set(lst):
+    return list(set(lst))
+
+make_set = udf(list_to_set, ArrayType(StringType()))
+dft3 = dft2.withColumn("m_set", make_set("m_list"))
+
+
+
+
+
+
+
+----------------------------------------------------------------------------------------------------------------------
+ 
+
+http://pnma202.amfam.com:8088/cluster/apps/RUNNING
+
+sc.setLogLevel(‘ERROR’)
+spark-submit —master yarn-client __.py > __.log &
+
+
+> : overwrite
+>>: append
+
+import time
+time.sleep(120)

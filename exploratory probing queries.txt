@@ -1,0 +1,319 @@
+#template
+
+sqlContext.sql("""
+
+                """).show()
+
+
+
+
+
+sqlContext.sql("Select rowid_object from t_sda01.c_cdh_household").show()
+
+
+
+sqlContext.sql("Describe t_sda01.c_cdh_party").show(50)
++--------------------+------------+-------+
+|            col_name|   data_type|comment|
++--------------------+------------+-------+
+|            birth_dt|  varchar(7)|   null|
+|       bo_class_code|varchar(255)|   null|
+|         create_date| varchar(19)|   null|
+|        cm_dirty_ind|         int|   null|
+|   consolidation_ind|         int|   null|
+|          deleted_by| varchar(50)|   null|
+|        deleted_date| varchar(19)|   null|
+|         deleted_ind|         int|   null|
+|           dirty_ind|         int|   null|
+|     edeliv_pref_ind|  varchar(4)|   null|
+|              eff_dt| varchar(19)|   null|
+|       hub_state_ind|         int|   null|
+|   last_rowid_system| varchar(14)|   null|
+|    last_update_date| varchar(19)|   null|
+|prefered_cntct_pr...| varchar(15)|   null|
+|        rowid_object| varchar(14)|   null|
+|   update_row_userid|  varchar(8)|   null|
+|          updated_by| varchar(50)|   null|
+|             creator| varchar(50)|   null|
+|      form_of_bus_cd| varchar(15)|   null|
+| form_of_bus_comment| varchar(60)|   null|
+|           gender_cd|  varchar(4)|   null|
+|      interaction_id|         int|   null|
+|  lender_sts_type_cd| varchar(15)|   null|
+|other_pri_lang_ty...| varchar(60)|   null|
+|other_sec_lang_ty...| varchar(60)|   null|
+|primary_lang_type_cd| varchar(15)|   null|
+|        prty_type_cd|  varchar(4)|   null|
+|secondary_lang_ty...| varchar(15)|   null|
+|      sqished_org_nm|varchar(100)|   null|
+|      suffix_type_cd| varchar(15)|   null|
+|             tpi_num| varchar(10)|   null|
+|     written_lang_cd| varchar(15)|   null|
++--------------------+------------+-------+
+
+
+
+sqlContext.sql("Describe t_sda01.c_cdh_household_prty_rel").show(50)
++-------------------+------------+-------+
+|           col_name|   data_type|comment|
++-------------------+------------+-------+
+|       cm_dirty_ind|         int|   null|
+|  consolidation_ind|         int|   null|
+|         deleted_by| varchar(50)|   null|
+|       deleted_date| varchar(19)|   null|
+|        deleted_ind|         int|   null|
+|          dirty_ind|         int|   null|
+|      hub_state_ind|         int|   null|
+|  last_rowid_system| varchar(14)|   null|
+|   last_update_date| varchar(19)|   null|
+|rowid_cdh_household| varchar(14)|   null|
+|    rowid_cdh_party| varchar(14)|   null|
+|       rowid_object| varchar(14)|   null|
+|  update_row_userid|  varchar(8)|   null|
+|         updated_by| varchar(50)|   null|
+|        create_date| varchar(19)|   null|
+|            creator| varchar(50)|   null|
+|     hierarchy_code|varchar(255)|   null|
+|     interaction_id|         int|   null|
+|     prty_role_cd_1| varchar(15)|   null|
+|     prty_role_cd_2| varchar(15)|   null|
+|  rbo_rel_type_code|varchar(255)|   null|
+|       rel_end_date| varchar(19)|   null|
+|     rel_start_date| varchar(19)|   null|
++-------------------+------------+-------+
+
+
+
+
+sqlContext.sql("describe t_sda01.c_cdh_household").show()
++-----------------+------------+-------+
+|         col_name|   data_type|comment|
++-----------------+------------+-------+
+|    bo_class_code|varchar(255)|   null|
+|     cm_dirty_ind|         int|   null|
+|consolidation_ind|         int|   null|
+|       deleted_by| varchar(50)|   null|
+|     deleted_date| varchar(19)|   null|
+|      deleted_ind|         int|   null|
+|        dirty_ind|         int|   null|
+|           eff_dt| varchar(19)|   null|
+|           end_dt| varchar(19)|   null|
+|    hub_state_ind|         int|   null|
+|last_rowid_system| varchar(14)|   null|
+| last_update_date| varchar(19)|   null|
+|     rowid_object| varchar(14)|   null|
+|update_row_userid|  varchar(8)|   null|
+|       updated_by| varchar(50)|   null|
+|      create_date| varchar(19)|   null|
+|          creator| varchar(50)|   null|
+|   interaction_id|         int|   null|
++-----------------+------------+-------+
+
+
+#household count
+sqlContext.sql("Select count(*) from t_sda01.c_cdh_household").show()
++------+
+|   _c0|
++------+
+|778514|
++------+
+
+
+
+#prty_email count
+sqlContext.sql("Select count(*) from t_sda01.c_cdh_prty_email").show()
++------+
+|   _c0|
++------+
+|211113|
++------+
+
+#email count
+sqlContext.sql("Select count(*) from t_sda01.c_cdh_email").show()
++------+
+|   _c0|
++------+
+|211113|
++------+
+
+
+
+#
+
+
+sqlContext.sql("Select count(*) from t_sda01.c_cdh_household_prty_rel").show()
++--------+
+|     _c0|
++--------+
+|22502777|
++--------+
+
+
+#Party count
+sqlContext.sql("Select count(*) from t_sda01.c_cdh_party").show()
++------+
+|   _c0|
++------+
+|782299|
++------+
+
+
+#Party Phone count
+sqlContext.sql("Select count(*) from t_sda01.c_cdh_prty_phone_contact").show()
+
++------+
+|   _c0|
++------+
+|833843|
++------+
+
+
+#Phone count
+sqlContext.sql("Select count(*) from t_sda01.c_cdh_phone_contact").show()
++------+
+|   _c0|
++------+
+|833843|
++------+
+
+
+#Party Email count
+sqlContext.sql("Select count(*) from t_sda01.c_cdh_prty_email").show()
+
++------+
+|   _c0|
++------+
+|211113|
++------+
+
+
+#Email count
+sqlContext.sql("Select count(*) from t_sda01.c_cdh_email").show()
++------+
+|   _c0|
++------+
+|211113|
++------+
+
+
+sqlContext.sql("Select count(*) from t_sda01.c_cdh_party AS a, t_sda01.c_cdh_household_prty_rel AS b where a.rowid_object=b.rowid_cdh_party").show()
++------+
+|   _c0|
++------+
+|945877|
++------+
+
+
+
+
+sqlContext.sql("Select count(*) from t_sda01.c_cdh_household AS a, t_sda01.c_cdh_household_prty_rel AS b where a.rowid_object=b.rowid_cdh_household").show()
++-------+
+|    _c0|
++-------+
+|2389788|
++-------+
+
+
+
+
+sqlContext.sql("Select count(*) from t_sda01.c_cdh_party AS a, t_sda01.c_cdh_household_prty_rel AS b, t_sda01.c_cdh_household as c  where a.rowid_object=b.rowid_cdh_party and b.rowid_cdh_household=c.rowid_object").show()
++-------+
+|    _c0|
++-------+
+|1868389|
++-------+
+
+
+
+
+
+sqlContext.sql("""SELECT a.create_date as Customer_create_date, 
+                            f.rowid_object as person_id, 
+                            a.rowid_object AS Party_id, 
+                            c.rowid_object as household_id, 
+                            e.phone_area_cd, e.phone_num
+                            
+                     FROM   t_sda01.c_cdh_party AS a INNER JOIN
+                            t_sda01.c_cdh_household_prty_rel AS b INNER JOIN 
+                            t_sda01.c_cdh_household as c INNER JOIN
+                            t_sda01.c_cdh_prty_phone_contact as d INNER JOIN
+                            t_sda01.c_cdh_phone_contact as e INNER JOIN 
+                            t_sda01.c_cdh_person as f 
+                            
+                     WHERE  a.rowid_object=b.rowid_cdh_party 
+                        AND b.rowid_cdh_household=c.rowid_object 
+                        AND a.rowid_object=d.party_id
+                        AND d.phone_contact_id=e.rowid_object 
+                        AND a.rowid_object=f.party_id
+                         
+                        """)
++--------------------+--------------+--------------+--------------+-------------+---------+
+|Customer_create_date|     person_id|      Party_id|  household_id|phone_area_cd|phone_num|
++--------------------+--------------+--------------+--------------+-------------+---------+
+| 2004-09-03 17:27:11|49118993      |53188023      |36437081      |          620|  2572083|
+| 2004-09-03 17:26:23|56290180      |53190808      |30882361      |          971|  2707810|
+| 2004-09-03 17:26:23|56290180      |53190808      |30882361      |          971|  2707810|
+| 2004-09-03 17:26:23|56290180      |53190808      |30882361      |          971|  2707810|
+| 2004-09-03 17:26:23|56290180      |53190808      |30882361      |          971|  2707810|
+| 2004-09-03 17:26:23|56290180      |53190808      |30882361      |          971|  2707810|
+| 2004-09-03 17:26:23|56290180      |53190808      |30882361      |          971|  2707810|
+| 2004-09-03 17:25:08|47741944      |53192761      |44932901      |          920|  5536995|
+
+| 2004-09-03 17:25:08|47741944      |53192761      |44932901      |          920|  5302897|
+| 2005-05-05 18:49:42|48842415      |53207144      |29927390      |          541|  7544165|
+| 2005-05-05 18:49:42|48842415      |53207144      |29927390      |          541|  7544165|
+| 2004-09-03 17:27:44|57612630      |53209883      |32462582      |          262|  7580705|
+| 2004-09-03 17:27:44|57612630      |53209883      |32462582      |          262|  9684722|
+| 2010-01-07 08:13:51|49479501      |53225720      |36973024      |          573|  5819162|
+| 2010-01-07 08:13:51|49479501      |53225720      |36973024      |          573|  5819162|
+| 2010-01-07 08:13:51|49479501      |53225720      |36973024      |          573|  5819162|
+| 2010-01-07 08:13:51|49479501      |53225720      |36973024      |          573|  5819162|
+| 2010-01-07 08:13:51|49479501      |53225720      |36973024      |          573|  5819162|
+| 2010-01-07 08:13:51|49479501      |53225720      |36973024      |          573|  5819162|
+| 2010-01-07 08:13:51|49479501      |53225720      |36973024      |          573|  5819162|
++--------------------+--------------+--------------+--------------+-------------+---------+
+
+
+#emailID and personID
+sqlContext.sql("""
+                SELECT g.email_addr_nm,
+                       a.rowid_object
+                         
+                FROM t_sda01.c_cdh_email as g INNER JOIN 
+                     t_sda01.c_cdh_prty_email as h INNER JOIN
+                     t_sda01.c_cdh_party as a
+
+                ON   a.rowid_object = h.party_id
+                AND  h.email_id = g.rowid_object
+                """).show()
+
+
++--------------------+--------------+
+|       email_addr_nm|  rowid_object|
+
++--------------------+--------------+
+|  wwagner3@wi.rr.com|53209883      |
+|rwingslsoccerc@gm...|53243647      |
+|ben.m.bauer@gmail...|53266453      |
+|roblambert18@gmai...|53281014      |
+|smithtj05@hotmail...|53296568      |
+|      rgpassig@q.com|53297286      |
+|johnw@aaroncarlso...|53304007      |
+|  nmlach08@gmail.com|53311924      |
+|  nmlach08@gmail.com|53311924      |
+|  nmlach08@gmail.com|53311924      |
+|  nmlach08@gmail.com|53311924      |
+|  nmlach08@gmail.com|53311924      |
+|  nmlach08@gmail.com|53311924      |
+|  nmlach08@gmail.com|53311924      |
+|  nmlach08@gmail.com|53311924      |
+|joe-hoffman@comca...|53320867      |
+| email_aen@yahoo.com|53350754      |
+|   ibzyboy@gmail.com|53370356      |
+|kaylpaul1970@yaho...|53371049      |
+|  kiro01@hotmail.com|53401706      |
++--------------------+--------------+
+
+
+
+		
